@@ -2,7 +2,6 @@
 #define SPANNERS_SRC_MODELS_POINT2D_H
 
 using ld=long double;
-#define EPS 1e-9
 
 /**
 Class used to represent points in the euclidean plane. Everything is in long
@@ -25,6 +24,9 @@ class Point2D {
   bool operator ==(const Point2D& b);
   Point2D operator  -();
   Point2D operator  -(const Point2D& b);
+
+ private:
+  const ld EPS=1e-9;
 };
 
 #endif // SPANNERS_SRC_MODELS_POINT2D_H

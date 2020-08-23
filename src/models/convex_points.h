@@ -1,7 +1,7 @@
 #ifndef SPANNERS_SRC_MODELS_CONVEX_POINTS_H
 #define SPANNERS_SRC_MODELS_CONVEX_POINTS_H
 
-#include "point_2d.h"
+#include "point2d.h"
 #include <vector>
 
 // Class to handle a set of convex points. As one can see, right now it is
@@ -20,7 +20,7 @@ class ConvexPoints {
  public:
   std::vector<Point2D> points;
 
-  ConvexPoints(vector<Point2D> points_): points(points_) {}
+  ConvexPoints(std::vector<Point2D> points_): points(points_) {}
 };
 
 
