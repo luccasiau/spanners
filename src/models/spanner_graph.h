@@ -33,59 +33,60 @@ class SpannerGraph {
   //  graph since the last time the spanning ratio was calculated, it will
   //  first update the spanning ratio.
   //  If two vertices are not connected, the spanning ratio will be infinity.
-  ld get_spanning_ratio(bool update_if_needed=true);
+  ld spanning_ratio(bool update_if_needed=true);
 
   // Updates spanning ratio.
   void update_spanning_ratio();
 
-  // Returns the shortest distance between node. Recalculates ALL PAIRS to
+  // Returns the shortest path between node. Recalculates ALL PAIRS to
   // update distance if needed.
   // Input:
   //  - bool update_if_needed [default=true]: If there have been changes to
   //  the graph since the last calculation, it will recalculate ALL shortest
   //  paths in the graph using Floyd-Warshall.
   // Returns infinity if a and b are not in [0, N).
-  ld shortest_distance(int a, int b, bool update_if_needed=true);
+  ld shortest_path(int a, int b, bool update_if_needed=true);
 
   // Recalculates shortest distance between all pairs.
   void update_shortest_paths();
 
   // Returns the degree of vertex x.
   // If x is not in [0, N), it will return the invalid degree of -1.
-  int get_degree(int x);
+  int degree(int x);
 
   // Returns the Euclidean distance between vertices a and b.
   // If a or b are not in [0, N), it will return the invalid distance of -1.
-  ld get_euclidean_distance(int a, int b);
+  ld euclidean_distance(int a, int b);
 
   // TODO: Add the functions I need to get info about the graph 
   // Some of them are: getN, getEdges...
   int size();
 
   // Returns the number of bidirectional edges.
-  int get_number_edges();
+  int number_edges();
 
   // Returns BOOLEAN adjacency matrix. True indicating whether two points
   // are connected (by an edge with their Euclidean distance)
-  vector<vector<bool>> get_adjacency_matrix();
+  vector<vector<bool>> adjacency_matrix();
 
  private:
   const ld INF=1e18;
 
   int N;
+  int num_edges;
   ConvexPoints convex_points;
 
   bool is_shortest_path_updated;
-  vector<int> degree;
+  vector<int> m_degree;
   // adj_matrix[i][j] is true if the two nodes are connected. If they are, the
   // distance will be denominated by euclidean_distance.
   vector<vector<bool>> adj_matrix;
   vector<vector<ld>> sp_matrix;
 
-  vector<vector<ld>> euclidean_distance;
+  vector<vector<ld>> m_euclidean_distance;
 
   bool is_spanning_ratio_updated;
-  ld spanning_ratio;
+  ld m_spanning_ratio;
 
   // Calculates all-pairs of euclidean distances and caches it. This avoid
   // repeatedly calculating the same distances.
