@@ -17,12 +17,14 @@ class SpannerGraph {
   // Euclidean distance. This also sets the "updated" booleans to false.
   // Silently ignored if there is a pre-existing edge.
   // Silently ignored if a and b are not in [0, N)
+  // Silently ignored if a == b
   void add_edge(int a, int b);
 
   // Removes an edge between vertices a and b.
   // This also sets the "updated" booleans to false.
   // Silently ignored if there's no edge.
   // Silently ignored if a and b are not in [0, N)
+  // Silently ignored if a == b
   void remove_edge(int a, int b);
 
   // Returns the spanning ratio.
@@ -48,6 +50,25 @@ class SpannerGraph {
   // Recalculates shortest distance between all pairs.
   void update_shortest_paths();
 
+  // Returns the degree of vertex x.
+  // If x is not in [0, N), it will return the invalid degree of -1.
+  int get_degree(int x);
+
+  // Returns the Euclidean distance between vertices a and b.
+  // If a or b are not in [0, N), it will return the invalid distance of -1.
+  ld get_euclidean_distance(int a, int b);
+
+  // TODO: Add the functions I need to get info about the graph 
+  // Some of them are: getN, getEdges...
+  int size();
+
+  // Returns the number of bidirectional edges.
+  int get_number_edges();
+
+  // Returns BOOLEAN adjacency matrix. True indicating whether two points
+  // are connected (by an edge with their Euclidean distance)
+  vector<vector<bool>> get_adjacency_matrix();
+
  private:
   const ld INF=1e18;
 
@@ -56,7 +77,9 @@ class SpannerGraph {
 
   bool is_shortest_path_updated;
   vector<int> degree;
-  vector<vector<ld>> adj_matrix;
+  // adj_matrix[i][j] is true if the two nodes are connected. If they are, the
+  // distance will be denominated by euclidean_distance.
+  vector<vector<bool>> adj_matrix;
   vector<vector<ld>> sp_matrix;
 
   vector<vector<ld>> euclidean_distance;
