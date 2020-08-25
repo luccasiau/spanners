@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "convex_points.h"
+#include "point2d.h"
 
 using ld=long double;
 using std::vector;
@@ -58,8 +59,7 @@ class SpannerGraph {
   // If a or b are not in [0, N), it will return the invalid distance of -1.
   ld euclidean_distance(int a, int b);
 
-  // TODO: Add the functions I need to get info about the graph 
-  // Some of them are: getN, getEdges...
+  // Returns number of nodes in the graph.
   int size();
 
   // Returns the number of bidirectional edges.
@@ -69,12 +69,20 @@ class SpannerGraph {
   // are connected (by an edge with their Euclidean distance)
   vector<vector<bool>> adjacency_matrix();
 
+  // Return the point of index i
+  // If i is not in [0, N), it will mod it to be there. This might be handy, or
+  // I might regret it. Only time will tell.
+  Point2D point(int i);
+
+  // Return the set of convex points
+  ConvexPoints convex_points();
+
  private:
   const ld INF=1e18;
 
   int N;
   int num_edges;
-  ConvexPoints convex_points;
+  ConvexPoints m_convex_points;
 
   bool is_shortest_path_updated;
   vector<int> m_degree;

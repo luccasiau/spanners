@@ -8,9 +8,8 @@
 // --------------------------- PUBLIC ---------------------------
 // --------------------------------------------------------------
 
-SpannerGraph::SpannerGraph(ConvexPoints points) : convex_points(points) {
-  // convex_points = points; 
-  N = (int)convex_points.points.size();
+SpannerGraph::SpannerGraph(ConvexPoints points) : m_convex_points(points) {
+  N = (int)m_convex_points.points.size();
   num_edges = 0;
 
   is_shortest_path_updated = false;
@@ -134,6 +133,18 @@ vector<vector<bool>> SpannerGraph::adjacency_matrix() {
   return adj_matrix;
 }
 
+Point2D SpannerGraph::point(int i) {
+  i %= N;
+  if (i < 0) {
+    i += N;
+  }
+  return m_convex_points.points[i];
+}
+
+ConvexPoints SpannerGraph::convex_points() {
+  return m_convex_points;
+}
+
 // -----------------------------------------------------------
 // ------------------------- PRIVATE -------------------------
 // -----------------------------------------------------------
@@ -142,7 +153,7 @@ void SpannerGraph::calculate_euclidean_distances() {
   for (int i = 0; i < N; i++) {
     for (int j = i; j < N; j++) {
       m_euclidean_distance[i][j] = m_euclidean_distance[j][i] =
-        geo_math::distance(convex_points.points[i], convex_points.points[j]);
+        geo_math::distance(m_convex_points.points[i], m_convex_points.points[j]);
     }
   }
 }
