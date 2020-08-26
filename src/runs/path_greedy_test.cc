@@ -30,6 +30,8 @@ int main() {
   cout << "Spanner from PathGreedy with t = " << t << endl;
   cout << "#nodes: " << spanner.size() << endl;
   cout << "#edges: " << spanner.number_edges() << endl;
+  cout << "Planarity: " << (spanner.is_planar()?"":"NOT ") << "PLANAR" << endl;
+  cout << "Max degree: " << spanner.max_degree() << endl;
   cout << "----Nodes' degrees----" << endl;
   for (int i = 0; i < spanner.size(); i++) {
     cout << "degree(" << i << ") = " << spanner.degree(i) << endl;
