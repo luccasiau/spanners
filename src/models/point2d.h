@@ -27,7 +27,7 @@ class Point2D {
   Point2D& operator =(const Point2D& other);
 
  private:
-  constexpr ld EPS=1e-9;
+  const ld EPS=1e-9;
 };
 
 #endif // SPANNERS_SRC_MODELS_POINT2D_H
