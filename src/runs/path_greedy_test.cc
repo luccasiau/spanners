@@ -2,6 +2,7 @@
 // Using Standard IO
 #include <algorithm>
 #include <iostream>
+#include <string>
 #include <vector>
 #include "../algorithms/path_greedy.h"
 #include "../models/spanner_graph.h"
@@ -14,7 +15,14 @@ using ld=long double;
 constexpr ld PI = 3.1415926535897932384626;
 constexpr ld t = (3 + 4*PI)/3;
 
-int main() {
+int main(int argc, char* argv[]) {
+  bool verbose = false;
+  if (argc > 1) {
+    if (argv[1] == string("-v")) {
+      verbose = true;
+    }
+  }
+
   int N;
   cin >> N;
 
@@ -32,23 +40,25 @@ int main() {
   cout << "#edges: " << spanner.number_edges() << endl;
   cout << "Planarity: " << (spanner.is_planar()?"":"NOT ") << "PLANAR" << endl;
   cout << "Max degree: " << spanner.max_degree() << endl;
-  cout << "----Nodes' degrees----" << endl;
-  for (int i = 0; i < spanner.size(); i++) {
-    cout << "degree(" << i << ") = " << spanner.degree(i) << endl;
-  }
-  cout << "----------------------" << endl;
-  cout << "Adjacency matrix:" << endl;
-  auto M = spanner.adjacency_matrix();
-  cout << " ";
-  for (int i = 0; i < spanner.size(); i++) cout << " " << i;
-  cout << endl;
-  for (int i = 0; i < (int)M.size(); i++) {
-    cout << i;
-    for (int j = 0; j < (int)M[i].size(); j++) {
-      if (M[i][j] && i != j) cout << " T";
-      else cout << "  ";
+  if (verbose) {
+    cout << "----Nodes' degrees----" << endl;
+    for (int i = 0; i < spanner.size(); i++) {
+      cout << "degree(" << i << ") = " << spanner.degree(i) << endl;
     }
+    cout << "----------------------" << endl;
+    cout << "Adjacency matrix:" << endl;
+    auto M = spanner.adjacency_matrix();
+    cout << " ";
+    for (int i = 0; i < spanner.size(); i++) cout << " " << i;
     cout << endl;
+    for (int i = 0; i < (int)M.size(); i++) {
+      cout << i;
+      for (int j = 0; j < (int)M[i].size(); j++) {
+        if (M[i][j] && i != j) cout << " T";
+        else cout << "  ";
+      }
+      cout << endl;
+    }
   }
 
   return 0;
