@@ -13,7 +13,7 @@ class Point2D {
  public:
   ld x, y;
 
-  Point2D(ld x_=0, ld y_=0): x(x_), y(y_) {}
+  Point2D(ld x_=0, ld y_=0);
 
   // Returns the squared 2-norm of the vector
   ld squared_norm();
@@ -21,12 +21,13 @@ class Point2D {
   // Returns the 2-norm of the vector
   ld norm();
 
-  bool operator ==(const Point2D& b);
+  bool operator ==(const Point2D& other);
   Point2D operator  -();
-  Point2D operator  -(const Point2D& b);
+  Point2D operator  -(const Point2D& other);
+  Point2D& operator =(const Point2D& other);
 
  private:
-  const ld EPS=1e-9;
+  constexpr ld EPS=1e-9;
 };
 
 #endif // SPANNERS_SRC_MODELS_POINT2D_H
