@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <cstdlib>
+#include <cmath>
 #include <tuple>
 #include <vector>
 #include "path_greedy.h"

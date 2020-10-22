@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include "geo_math.h"
 
@@ -19,7 +21,7 @@ ld geo_math::sq_distance(Point2D a, Point2D b) {
 }
 
 bool geo_math::colinear(Point2D a, Point2D b, Point2D c, ld epsilon) {
-  return std::abs(cross(b-a, c-a)) < epsilon;
+  return abs(cross(b-a, c-a)) < epsilon;
 }
 
 bool geo_math::ccw(Point2D a, Point2D b, Point2D c, ld epsilon) {
@@ -31,7 +33,7 @@ bool geo_math::within_segment(Point2D p, std::pair<Point2D, Point2D> seg,
   if (p == seg.first || p == seg.second) {
     return include_endpoints;
   }
-  return std::abs(distance(seg.first, seg.second) - distance(seg.first, p)
+  return abs(distance(seg.first, seg.second) - distance(seg.first, p)
       - distance(seg.second, p)) < eps;
 }
 
