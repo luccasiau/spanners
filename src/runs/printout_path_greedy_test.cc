@@ -15,7 +15,8 @@ using namespace std;
 using ld=long double;
 
 constexpr ld PI = 3.1415926535897932384626;
-constexpr ld t = (3 + 4*PI)/3;
+//constexpr ld t = (3 + 4*PI)/3;
+constexpr ld t = 2;
 
 int main(int argc, char* argv[]) {
   int N;
