@@ -66,6 +66,10 @@ class EuclideanSpanner:
     if update_sp:
       update_sp()
 
+  # Returns whether there is an edge between p1 and p2.
+  def query_edge(self, p1, p2):
+    return self.__adj_matrix[p1][p2] 
+
   # Run Floyd-Warshall's algorithm on the graph's adjacency matrix.
   def update_sp(self):
     for i in self.__pointset.keys():
@@ -96,15 +100,19 @@ class EuclideanSpanner:
 
   # Returns point labels
   def labels(self):
-    return self.__pointset.labels()
+    return list(self.__pointset.keys())
+
+  # Returns coordinates of a given point
+  def coordinate(self, label):
+    return self.__pointset[label]
 
   # "PRIVATE" METHODS ----------------------------------------------------------
   # Euclidean Distance between points label_a, label_b
-  def __dist(self, label_a, label_b):
-    return np.linalg.norm(self.__pointset(label_a) - self.__pointset(label_b))
+  def __dist(self, l1, l2):
+    return np.linalg.norm(self.__pointset[l1] - self.__pointset[l2])
 
   def __update_stretch(self):
     self.__stretch = np.max([
       [self.pair_stretch(i, j) for j in self.__pointset.keys()]
-      for i in self.__poinset.keys()]
+      for i in self.__pointset.keys()]
     )
