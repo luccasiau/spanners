@@ -74,8 +74,8 @@ class EuclideanSpanner:
   def update_sp(self):
     for i in self.__pointset.keys():
       for j in self.__pointset.keys():
-        self.__sp_matrix[i][j] = self.__dist(i, j) if self.__adj_matrix[i][j]\
-          else np.inf
+        self.__sp_matrix[i][j] = self.eucl_dist(i, j)\
+          if self.__adj_matrix[i][j] else np.inf
 
     for k in self.__pointset.keys():
       for i in self.__pointset.keys():
@@ -88,11 +88,15 @@ class EuclideanSpanner:
   # Returns stretch between two points in the graph.
   # Returns 1 if p1==p2
   def pair_stretch(self, p1, p2):
-    return 1 if p1 == p2 else self.__sp_matrix[p1][p2] / self.__dist(p1, p2)
+    return 1 if p1 == p2 else self.__sp_matrix[p1][p2] / self.eucl_dist(p1, p2)
 
   # Returns stretch of entire graph
   def stretch(self):
     return self.__stretch
+
+  # Returns a single pair with maximum stretch
+  def stretch_pair(self):
+    return self.__stretch_pair
 
   # Returns max degree in the graph
   def max_degree(self):
@@ -106,13 +110,20 @@ class EuclideanSpanner:
   def coordinate(self, label):
     return self.__pointset[label]
 
-  # "PRIVATE" METHODS ----------------------------------------------------------
   # Euclidean Distance between points label_a, label_b
-  def __dist(self, l1, l2):
+  def eucl_dist(self, l1, l2):
     return np.linalg.norm(self.__pointset[l1] - self.__pointset[l2])
 
+  def shortest_path(self, l1, l2):
+    return self.__sp_matrix[l1][l2]
+
+  # "PRIVATE" METHODS ----------------------------------------------------------
   def __update_stretch(self):
-    self.__stretch = np.max([
-      [self.pair_stretch(i, j) for j in self.__pointset.keys()]
-      for i in self.__pointset.keys()]
-    )
+    self.__stretch = 0
+    for li in self.__pointset.keys():
+      for lj in self.__pointset.keys():
+        if li >= lj: continue
+        ps = self.pair_stretch(li, lj)
+        if ps > self.__stretch:
+          self.__stretch = ps
+          self.__stretch_pair = [li, lj]
