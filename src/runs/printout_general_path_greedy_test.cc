@@ -1,11 +1,13 @@
-// Version 0: Very primitive, I just want to get this working.
+// Run ./printout_genereal_path_greedy_test t_ratio
+
+// Version 1: Still primitive, I just want to get this working.
 // Using Standard IO
 // This version is to be used in the jupyter notebook to get the image
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../algorithms/path_greedy.h"
+#include "../algorithms/general_path_greedy.h"
 #include "../models/spanner_graph.h"
 #include "../models/convex_points.h"
 #include "../models/point2d.h"
@@ -14,13 +16,24 @@
 using namespace std;
 using ld=long double;
 
-constexpr ld PI = 3.1415926535897932384626;
-constexpr ld t = (3 + 4*PI)/3;
-//constexpr ld t = 2;
-
 int main(int argc, char* argv[]) {
-  int N;
-  cin >> N;
+  if (argc < 2) {
+    cerr << "ERROR: Must specify t-ratio" << endl;
+    exit(1);
+  }
+
+  ld t_ratio;
+  try {
+    t_ratio = stod(argv[1]);
+  } catch (const std::invalid_argument& ia) {
+    cerr << "EXCEPTION: parsing t-ratio: " << ia.what() << endl;
+    exit(1);
+  }
+
+  cerr << "t-ratio: " << t_ratio << endl;
+
+  int N, eBefore, eAfter;
+  cin >> N >> eBefore >> eAfter;
 
   vector<Point2D> points(N);
   for (int i = 0; i < N; i++) {
@@ -29,7 +42,22 @@ int main(int argc, char* argv[]) {
     points[i] = Point2D(x, y);
   }
 
-  SpannerGraph spanner = path_greedy::path_greedy(ConvexPoints(points), t);
+  vector<tuple<int, int>> beforeEdges, afterEdges;
+  for (int i = 0; i < eBefore; i++) {
+    int a, b;
+    cin >> a >> b;
+    beforeEdges.push_back(make_tuple(a, b));
+  }
+  for (int i = 0; i < eAfter; i++) {
+    int a, b;
+    cin >> a >> b;
+    afterEdges.push_back(make_tuple(a, b));
+  }
+
+  cerr << beforeEdges.size() << " " << afterEdges.size() << endl;
+
+  SpannerGraph spanner = general_path_greedy::general_path_greedy(
+    SpannerGraph(ConvexPoints(points)), t_ratio, beforeEdges, afterEdges);
 
   auto M = spanner.adjacency_matrix();
   cout << N << endl;

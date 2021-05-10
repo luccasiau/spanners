@@ -88,9 +88,10 @@ ld SpannerGraph::shortest_path(int a, int b, bool update_if_needed) {
 }
 
 bool SpannerGraph::is_planar(bool update_if_needed) {
-  if (update_if_needed && is_planarity_updated) {
+  if (update_if_needed || !is_planarity_updated) {
     update_planarity();
   }
+  // FIXME PLEASE
   return m_is_planar;
 }
 
