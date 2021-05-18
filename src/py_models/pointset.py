@@ -1,29 +1,32 @@
 import numpy as np
+from py_models.geo_math import point_distance
 
 class Pointset:
   """
   Class to store and represent R^d pointsets. It has support for the before and
   after edges used in general path greedy.
+
+  Please do not edit the points in the pointset after creation. Just initialize
+  a whole new one.
   """
-  def __init__(self):
-    self._points = []
+  # If a file_path is provided, it overrides the points
+  def __init__(self, points=[], file_path=''):
+    self.points = []
     self._before_edges = []
     self._after_edges = []
-  
-  def __init__(self, file_path=''):
-    self._points = []
-    self._before_edges = []
-    self._after_edges = []
-    
-    f = open(file_path, 'r')
-    for line in f:
+
+    if file_path != '':
+      f = open(file_path, 'r')
+      for line in f:
         if (len(line.split()) != 2):
             continue
-        self._points.append(np.array([float(line.split()[0]), float(line.split()[1])]))
-    f.close()
+        self.points.append(np.array([float(line.split()[0]), float(line.split()[1])]))
+      f.close()
+    else: self.points = [np.array(p) for p in points]
+    
   
   def size(self):
-    return len(self._points)
+    return len(self.points)
   
   def add_before_edge(self, edge):
     self._before_edges.append(edge)
@@ -32,11 +35,22 @@ class Pointset:
     self._after_edges.append(edge)
 
   def get_point(self, idx):
-    return self._points[idx]
+    return self.points[idx]
   
   def print_points(self):
-    for i, p in enumerate(self._points):
+    for i, p in enumerate(self.points):
         print(f'{[i]}: {p}')
+
+  def find_diameter(self):
+    longest_distance = 0
+    diam = []
+    for i in range(len(self.points)):
+      for j in range(i+1, len(self.points)):
+        dist = point_distance(self.points[i], self.points[j])
+        if dist > longest_distance:
+          longest_distance = dist
+          diam = [i, j]
+    return diam
 
   # Format:
   # Line 1: len(points) len(before_edges) len(after_edges)
@@ -46,10 +60,10 @@ class Pointset:
   #  (len(points)+len(before_edges)+len(after_edge)1): after edges
   def print_all_string(self):
     ret = ''
-    ret += str(len(self._points)) + ' '
+    ret += str(len(self.points)) + ' '
     ret += str(len(self._before_edges)) + ' '
     ret += str(len(self._after_edges)) + '\n'
-    for point in self._points:
+    for point in self.points:
       for i, d in enumerate(point):
         ret += str(d) + (' ' if i<len(point)-1 else '\n')
     for be in self._before_edges:

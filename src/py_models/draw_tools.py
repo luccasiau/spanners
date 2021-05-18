@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
 # Adds a square red point (denominated by p) to the given drawing.
@@ -8,8 +8,8 @@ def draw_point(drawing, p, r=2.5):
 
 
 # Draws line segments (given by segments) and square points at the endpoints.
-# This is code recycled from my old implementations. It anedoctally works.
-def draw_line_segments(segments, img_w=300, img_h=300, margin=50):
+# This is code recycled from my old implementations. It anecdotally works.
+def draw_line_segments(segments, img_w=300, img_h=300, margin=50, pointset=None):
     minX = 10
     minY = 10
 
@@ -37,7 +37,13 @@ def draw_line_segments(segments, img_w=300, img_h=300, margin=50):
     for segment in segments:
         draw_point(draw, [qx(segment[0][0]), qy(segment[0][1])])
         draw_point(draw, [qx(segment[1][0]), qy(segment[1][1])])
-        
+    
+    if pointset is not None:
+      # kinda hacky way to get a font
+      font = ImageFont.truetype('/System/Library/Fonts/Monaco.dfont', size=20)
+      for i, p in enumerate(pointset.points):
+        draw.text((qx(p[0]), qy(p[1])), str(i), (0, 0, 0), font=font)
+
     return img
 
 

@@ -5,7 +5,7 @@
 #include <vector>
 #include "path_greedy.h"
 
-bool plane_greedy_sort(std::tuple<ld, int, int> a, std::tuple<ld, int, int> b);
+bool path_greedy_sort(std::tuple<ld, int, int> a, std::tuple<ld, int, int> b);
 
 SpannerGraph path_greedy::path_greedy(ConvexPoints convex_points, ld t, ld epsilon) {
   SpannerGraph spanner = SpannerGraph(convex_points);
@@ -16,7 +16,7 @@ SpannerGraph path_greedy::path_greedy(ConvexPoints convex_points, ld t, ld epsil
     }
   }
 
-  std::sort(all_pairs.begin(), all_pairs.end(), plane_greedy_sort);
+  std::sort(all_pairs.begin(), all_pairs.end(), path_greedy_sort);
 
   for (auto& p : all_pairs) {
     int a = std::get<1>(p);
@@ -33,7 +33,7 @@ SpannerGraph path_greedy::path_greedy(ConvexPoints convex_points, ld t, ld epsil
   return spanner;
 }
 
-bool plane_greedy_sort(std::tuple<ld, int, int> a, std::tuple<ld, int, int> b) {
+bool path_greedy_sort(std::tuple<ld, int, int> a, std::tuple<ld, int, int> b) {
   // FIXME: 1e-8 shouldn't be hardcoded here.
   if (abs(std::get<0>(a) - std::get<0>(b)) > 1e-8) {
     return std::get<0>(a) < std::get<0>(b);

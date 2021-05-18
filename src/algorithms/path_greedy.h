@@ -8,9 +8,12 @@ namespace path_greedy {
 
 using ld=long double;
 
+// TODO(Lucca): Deprecate this one or substitute it with GeneralPathGreedy.
+
 // Algorithm: PathGreedy(convex_points, t)
 // inputs:
-//  - convex_points: a set of points in convex position in R^2.
+//  - convex_points: a set of points in convex position in R^2. FIXME(Lucca):
+//  does it need to be in convex position?
 //  - t: a real number > 1.
 //  - epsilon [default=1e-8]: Epsilon to be used for long-double comparisons.
 // output:
