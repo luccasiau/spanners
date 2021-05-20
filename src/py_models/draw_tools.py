@@ -9,6 +9,8 @@ def draw_point(drawing, p, r=2.5):
 
 # Draws line segments (given by segments) and square points at the endpoints.
 # This is code recycled from my old implementations. It anecdotally works.
+#
+# If one wishes to have labels, just provide a Pointset
 def draw_line_segments(segments, img_w=300, img_h=300, margin=50, pointset=None):
     minX = 10
     minY = 10
@@ -39,7 +41,7 @@ def draw_line_segments(segments, img_w=300, img_h=300, margin=50, pointset=None)
         draw_point(draw, [qx(segment[1][0]), qy(segment[1][1])])
     
     if pointset is not None:
-      # kinda hacky way to get a font
+      # kinda hacky way to get a font -- works on Mac only
       font = ImageFont.truetype('/System/Library/Fonts/Monaco.dfont', size=20)
       for i, p in enumerate(pointset.points):
         draw.text((qx(p[0]), qy(p[1])), str(i), (0, 0, 0), font=font)
@@ -49,7 +51,7 @@ def draw_line_segments(segments, img_w=300, img_h=300, margin=50, pointset=None)
 
 # Receives an EuclideanSpanner object and draws it. Unfortunately, this
 # implementations is currently missing labels on points.
-# TODO(Lucca): Add labels to the drawing.
+
 def draw_euclidean_spanner(spanner, img_w=300, img_h=300, margin=50):
   labels = spanner.labels()
 
@@ -61,3 +63,19 @@ def draw_euclidean_spanner(spanner, img_w=300, img_h=300, margin=50):
                          spanner.coordinate(labels[j])])
 
   return draw_line_segments(segments, img_w, img_h, margin)
+
+
+# Extract the line segments contained in a file.
+def get_segments_from_file(file_path):
+  file = open(file_path, 'r')
+  lines = file.readlines()
+  
+  n = int(lines[0])
+  print('N =', n)
+  print(lines[1] + lines[2] + lines[3])
+  
+  parseLine = lambda ln : [[float(ln.split()[0]), float(ln.split()[1])],\
+                            [float(ln.split()[2]), float(ln.split()[3])]]
+  segments = [parseLine(ln) for ln in lines[4:]]
+  
+  return segments
