@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <tuple>
 #include "../algorithms/general_path_greedy.h"
 #include "../models/spanner_graph.h"
 #include "../models/convex_points.h"
@@ -30,7 +31,11 @@ int main(int argc, char* argv[]) {
     exit(1);
   }
 
+  bool random_tiebreak = false;
+  if (argc > 2 && !strcmp(argv[2], "-random")) random_tiebreak = true;
+
   cerr << "t-ratio: " << t_ratio << endl;
+  cerr << "random tiebreak " << random_tiebreak << endl;
 
   int N, eBefore, eAfter;
   cin >> N >> eBefore >> eAfter;
@@ -56,8 +61,13 @@ int main(int argc, char* argv[]) {
 
   cerr << beforeEdges.size() << " " << afterEdges.size() << endl;
 
+  srand(time(NULL));
   SpannerGraph spanner = general_path_greedy::general_path_greedy(
-    SpannerGraph(ConvexPoints(points)), t_ratio, beforeEdges, afterEdges);
+    SpannerGraph(ConvexPoints(points)),
+    t_ratio,
+    beforeEdges,
+    afterEdges,
+    random_tiebreak);
 
   auto M = spanner.adjacency_matrix();
   cout << N << endl;

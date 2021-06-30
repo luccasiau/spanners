@@ -24,6 +24,7 @@ SpannerGraph general_path_greedy(
   ld t,
   std::vector<std::tuple<int, int>> edges_add_before = {},
   std::vector<std::tuple<int, int>> edges_add_after = {},
+  bool random_tiebreak = false,
   ld epsilon = 1e-8);
 }
 
