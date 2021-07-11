@@ -12,7 +12,7 @@
 using namespace std;
 using ld=long double;
 
-void printSpannerInfo(SpannerGraph spanner, int ttt) {
+void printSpannerInfo(SpannerGraph spanner, int ttt, double t_ratio) {
   int N = spanner.size();
   auto M = spanner.adjacency_matrix();
   cout << N << endl;
@@ -27,7 +27,7 @@ void printSpannerInfo(SpannerGraph spanner, int ttt) {
     }
   }
 
-  cout << "Stretch: " << stretch << endl;
+  cout << "t = " << t_ratio << "; Stretch: " << stretch << endl;
   for (int i = 0; i < M.size(); i++) {
     for (int j = 0; j < (int)M[i].size(); j++) {
       if (M[i][j] && i != j) {
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
     
     if (!trySpanner.is_planar()) {
       cerr << "Found one in " << ttt << " iterations" << endl;
-      printSpannerInfo(trySpanner, ttt);
+      printSpannerInfo(trySpanner, ttt, t_ratio);
       return 0;
     }
     
